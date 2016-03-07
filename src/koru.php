@@ -9,40 +9,38 @@ class Koru
 
 class KoruData
 {
+    private $data       = [];
+    private $isTroubled = false;
+
     function __construct($data)
     {
         foreach($data as $key => $value)
-            $this->$key = $value;
+            $this->data[$key] = $value;
     }
-    
+
     function __get($name)
     {
-        return property_exists($this, $name) ? $this->$name : null;
+        return isset($this->data[$name]) ? $this->data[$name] : null;
     }
-    
-    //function toJson($options = null)
-    //{
-    //    return json_encode(get_object_vars($this), func_get_args());
-    //}
-    
-    function add($key, $value)
+
+    function __set($name, $value)
     {
-        $this->$key = $value;
-        
+        $this->data[$name] = $value;
+    }
+
+    function isTroubled($set = false)
+    {
+        if($set)
+            $this->isTroubled = true;
+        else
+            return $this->isTroubled;
+
         return $this;
     }
-    
-    function remove($key)
-    {
-        if(isset($this->$key))
-            unset($this->$key);
-            
-        return $this;
-    }
-    
+
     function output()
     {
-        return get_object_vars($this);
+        return $this->data;
     }
 }
 ?>
