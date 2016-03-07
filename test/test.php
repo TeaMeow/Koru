@@ -5,11 +5,10 @@ include '../src/koru.php';
 
 $array = ['Hello' => 'Hibow',
           'Moon'  => 'Dalan'];
-          
-$array = Koru::build($array);          
 
- 
-          
-exit(var_dump($array->Hello));
+$array = Koru::build($array);
+
+
+exit(var_dump($array->output()));
 
 ?>
