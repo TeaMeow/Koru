@@ -28,6 +28,14 @@ class KoruData
         $this->data[$name] = $value;
     }
 
+    function store($array)
+    {
+        foreach($array as $key => $value)
+        {
+            $this->data[$key] = $value;
+        }
+    }
+
     function isTroubled($set = false)
     {
         if($set)
