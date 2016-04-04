@@ -1,8 +1,10 @@
 <?php
 class Koru
 {
-    static function build($data)
-    {
+    static function build($data = null)
+    {  
+        $data = $data ?: [];
+        
         return new KoruData($data);
     }
 }
@@ -35,6 +37,41 @@ class KoruData
             
         return $this;
     }
+    
+    function clean($variables)
+    {
+        $variables = explode(', ', $variables);
+        
+        foreach($this->data as $key => $value)
+        {
+            foreach($variables as $variable)
+                if($key === $variable)
+                    unset($this->data[$key]);
+        }
+        
+        return $this;
+    }
+    
+    function leave($variables)
+    {
+        $variables = explode(', ', $variables);
+        
+        foreach($this->data as $key => $value)
+        {
+            $expect = false;
+            
+            foreach($variables as $variable)
+                if($key === $variable)
+                    $expect = true;
+                    
+            if(!$expect)
+                unset($this->data[$key]);
+        }
+        
+        return $this;
+    }
+    
+    
 
     function store($array)
     {
