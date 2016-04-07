@@ -97,7 +97,7 @@ class Test extends PHPUnit_Framework_TestCase
     {
         $data = Koru::build(['username' => '[]']);
 
-        if(!is_array($data->jsonDecode('username')))
+        if(!is_array($data->jsonDecode('username')->username))
             $this->fail('Koru cannot decode the json.');
     }
 }
