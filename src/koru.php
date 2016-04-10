@@ -302,11 +302,30 @@ class KoruData
      *
      * Push the datas into a single array and output it.
      *
+     * @param string $outputs   The values to output, seperate by commas.
+     *
      * @return array
      */
 
-    function output()
+    function output($outputs = null)
     {
+        if($outputs)
+        {
+            $outputs = explode(',', $outputs);
+
+            $data = [];
+
+            foreach($outputs as $output)
+            {
+                $output = str_replace(["\n", "\r", ' '], '', $output);
+
+                if(isset($this->data[$output]))
+                    $data[$output] = $this->data[$output];
+            }
+
+            return $data;
+        }
+
         return $this->data;
     }
 }
