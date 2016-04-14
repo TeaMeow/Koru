@@ -13,6 +13,16 @@ class Koru
 
         return new KoruData($data);
     }
+
+    static function buildInput($data = null)
+    {
+        $data  = $data ?: [];
+        parse_str(file_get_contents('php://input'), $input);
+
+        $data = array_merge($data, $input);
+
+        return new KoruData($data);
+    }
 }
 
 
@@ -177,6 +187,9 @@ class KoruData
 
     function store($array)
     {
+        if(!$array)
+            return $this;
+
         foreach($array as $key => $value)
             $this->set($key, $value);
 
