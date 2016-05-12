@@ -290,6 +290,45 @@ class KoruData
 
 
     /**
+     * Only
+     *
+     * @return bool
+     */
+
+    function only($dataNames, $must = false)
+    {
+        $names = explode(',', $dataNames);
+        $keys  = [];
+
+
+        foreach($this->data as $key => $value)
+            array_push($keys, $key);
+
+
+        foreach($names as $name)
+        {
+            $name = str_replace(["\n", "\r", ' '], '', $name);
+
+            if(!isset($this->data[$name]) && $must)
+                return false;
+
+            $keys = array_diff($keys, [$name]);
+        }
+
+        return empty($keys);
+    }
+
+
+
+    function must($dataNames)
+    {
+        return $this->only($dataNames, true);
+    }
+
+
+
+
+    /**
      * Output Keys
      *
      * Output an array which fills with the data names.
