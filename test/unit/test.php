@@ -83,16 +83,16 @@ class Test extends PHPUnit_Framework_TestCase
      * Test the must function.
      */
 
-    function testMust()
+    function testHas()
     {
         $data = Koru::build(['username' => 'test',
                              'password' => 'test123',
                              'email'    => 'test@test.com']);
 
-        if($data->must('birthday'))
+        if($data->has('birthday'))
             $this->fail('Koru can\'t tell when the required data is missing.');
-        exit(var_dump($data));
-        if(!$data->must('username'))
+
+        if(!$data->has('username'))
             $this->fail('Koru is having some problems with must().');
     }
 

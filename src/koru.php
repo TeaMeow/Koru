@@ -346,6 +346,40 @@ class KoruData
 
 
     /**
+     * Has
+     *
+     * Returns true when the datas which we wanted do exist.
+     *
+     * @param string $dataNames   The data names.
+     *
+     * @return bool
+     */
+
+    function has($dataNames)
+    {
+        $names = explode(',', $dataNames);
+        $keys  = [];
+
+
+        foreach($this->data as $key => $value)
+            array_push($keys, $key);
+
+
+        foreach($names as $name)
+        {
+            $name = str_replace(["\n", "\r", ' '], '', $name);
+
+            if(!isset($this->data[$name]))
+                return false;
+        }
+
+        return true;
+    }
+
+
+
+
+    /**
      * Output Keys
      *
      * Output an array which fills with the data names.
