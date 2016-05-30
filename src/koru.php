@@ -292,6 +292,11 @@ class KoruData
     /**
      * Only
      *
+     * Returns true when there are only the datas which we wanted, no other datas.
+     *
+     * @param  string $dataNames   The data names.
+     * @param  bool   $must        Set true to "must mode".
+     *
      * @return bool
      */
 
@@ -318,6 +323,18 @@ class KoruData
         return empty($keys);
     }
 
+
+
+
+    /**
+     * Must
+     *
+     * Returns true when the datas which we wanted do exist.
+     *
+     * @param string $dataNames   The data names.
+     *
+     * @return bool
+     */
 
 
     function must($dataNames)

@@ -1,14 +1,13 @@
 <?php
-error_reporting(E_ALL);
+error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
 
 include '../src/koru.php';
 
-$array = ['Hello' => 'Hibow',
-          'Moon'  => 'Dalan'];
+class Test extends PHPUnit_Framework_TestCase
+{
+    function testBuild()
+    {
+}
 
-$array = Koru::build($array);
-
-
-exit(var_dump($array->output()));
-
+?>
 ?>

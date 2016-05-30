@@ -5,21 +5,120 @@ include 'src/koru.php';
 
 class Test extends PHPUnit_Framework_TestCase
 {
-    function __construct()
-    {
-
-    }
+    /**
+     * Test a empty build.
+     */
 
     function testEmptyBuild()
     {
         $data = Koru::build();
     }
 
+
+
+
+    /**
+     * Test a build from the input.
+     */
+
+    function testInputBuild()
+    {
+        $data = Koru::buildInput();
+    }
+
+
+
+
+    /**
+     * Test a build from an array.
+     */
+
     function testArrayBuild()
     {
         $data = Koru::build(['username' => 'test',
                              'password' => 'test123']);
     }
+
+
+
+
+    /**
+     * Test isTroubled function.
+     */
+
+    function testisTroubled()
+    {
+        $data = Koru::build();
+
+        $data->isTroubled(true);
+
+        if(!$data->isTroubled())
+            $this->fail('Koru can\'t mark a data as troubled.');
+    }
+
+
+
+
+    /**
+     * Test the only function.
+     */
+
+    function testOnly()
+    {
+        $data = Koru::build(['username' => 'test',
+                             'password' => 'test123',
+                             'email'    => 'test@test.com']);
+
+        if($data->only('username, password'))
+            $this->fail('Koru can\'t tell when there are NOT only those datas.');
+
+        if(!$data->only('username, password, email'))
+            $this->fail('Koru is having some problems with only().');
+    }
+
+
+
+
+    /**
+     * Test the must function.
+     */
+
+    function testMust()
+    {
+        $data = Koru::build(['username' => 'test',
+                             'password' => 'test123',
+                             'email'    => 'test@test.com']);
+
+        if($data->must('birthday'))
+            $this->fail('Koru can\'t tell when the required data is missing.');
+
+        if(!$data->must('username'))
+            $this->fail('Koru is having some problems with must().');
+    }
+
+
+
+
+    /**
+     * Test the set function.
+     */
+
+    function testSet()
+    {
+        $data = Koru::build();
+
+        $data->set('test', 'testtest');
+
+        if($data->must('test'))
+            $this->fail('Koru can\'t set a data.');
+    }
+
+
+
+
+    /**
+     * Test the clean function.
+     */
 
     function testClean()
     {
@@ -29,6 +128,13 @@ class Test extends PHPUnit_Framework_TestCase
         if($data->username !== null)
             $this->fail('Koru can\'t clean the right data.');
     }
+
+
+
+
+    /**
+     * Test the leave function.
+     */
 
     function testLeave()
     {
@@ -42,6 +148,13 @@ class Test extends PHPUnit_Framework_TestCase
             $this->fail('Koru can\'t clean the right data when leave().');
     }
 
+
+
+
+    /**
+     * Test the isNull function.
+     */
+
     function testIsNull()
     {
         $data = Koru::build(['username' => 'test',
@@ -53,6 +166,13 @@ class Test extends PHPUnit_Framework_TestCase
         if($data->isNull('username'))
             $this->fail('Koru is having some problems with isNull().');
     }
+
+
+
+
+    /**
+     * Test the isEmpty function.
+     */
 
     function testIsEmpty()
     {
@@ -66,6 +186,13 @@ class Test extends PHPUnit_Framework_TestCase
             $this->fail('Koru is having some problems with isEmpty().');
     }
 
+
+
+
+    /**
+     * Test the store function.
+     */
+
     function testStore()
     {
         $data = Koru::build(['username' => ['A', 'B'],
@@ -77,6 +204,13 @@ class Test extends PHPUnit_Framework_TestCase
             $this->fail('Koru is having some problems with store().');
     }
 
+
+
+
+    /**
+     * Test the output keys function.
+     */
+
     function testOutputKeys()
     {
         $data = Koru::build(['username' => ['A', 'B'],
@@ -85,6 +219,13 @@ class Test extends PHPUnit_Framework_TestCase
         $keys = $data->outputKeys();
     }
 
+
+
+
+    /**
+     * Test the normal output function.
+     */
+
     function testOutput()
     {
         $data = Koru::build(['username' => ['A', 'B'],
@@ -92,6 +233,13 @@ class Test extends PHPUnit_Framework_TestCase
 
         $keys = $data->output();
     }
+
+
+
+
+    /**
+     * Test the json decode function.
+     */
 
     function testJsonDecode()
     {

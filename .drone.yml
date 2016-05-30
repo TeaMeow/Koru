@@ -1,0 +1,10 @@
+build:
+  image: phpunit/phpunit:$$PHPUNIT_VERSION
+  commands:
+    - phpunit Test test/travis/test.php
+
+matrix:
+  PHPUNIT_VERSION:
+    - 4.8.5
+    - 4.7.7
+    - 4.6.10
