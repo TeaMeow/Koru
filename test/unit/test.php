@@ -91,7 +91,7 @@ class Test extends PHPUnit_Framework_TestCase
 
         if($data->must('birthday'))
             $this->fail('Koru can\'t tell when the required data is missing.');
-
+        exit(var_dump($data));
         if(!$data->must('username'))
             $this->fail('Koru is having some problems with must().');
     }
@@ -109,7 +109,7 @@ class Test extends PHPUnit_Framework_TestCase
 
         $data->set('test', 'testtest');
 
-        if($data->must('test'))
+        if(!$data->must('test'))
             $this->fail('Koru can\'t set a data.');
     }
 
