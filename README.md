@@ -47,7 +47,7 @@ Koru 是一個將資料轉換成 stdClass 的資料建構類別，用來更方�
 你需要先從指定來源建立 Koru。
 
 ```php
-$data = new Koru::build($_POST);
+$data = Koru::build($_POST);
 ```
 
 &nbsp;
