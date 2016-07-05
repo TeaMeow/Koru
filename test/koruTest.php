@@ -43,6 +43,15 @@ class KoruTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data->username, 'foobar');
     }
 
+    function testDirectlySet()
+    {
+        $data = Koru::build();
+
+        $data->username = 'foobar';
+
+        $this->assertEquals($data->username, 'foobar');
+    }
+
     function testMultipleSet()
     {
         $data = ['username' => 'foobar',
