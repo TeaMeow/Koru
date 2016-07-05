@@ -17,11 +17,12 @@ class Koru
     {
         $data      = $data      ?: [];
         $extraData = $extraData ?: [];
+        $input     = [];
 
         if($data === false)
             parse_str(file_get_contents('php://input'), $input);
 
-        $data = array_merge($extraData, $input);
+        $data = array_merge($data, $extraData, $input);
 
         return new KoruData($data);
     }
