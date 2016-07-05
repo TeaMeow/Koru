@@ -40,7 +40,7 @@ class KoruTest extends \PHPUnit_Framework_TestCase
 
         $data->set('username', 'foobar');
 
-        $this->assertEquals(data->username, 'foobar');
+        $this->assertEquals($data->username, 'foobar');
     }
 
     function testMultipleSet()
