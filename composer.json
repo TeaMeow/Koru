@@ -1,0 +1,13 @@
+{
+  "name": "TeaMeow/Koru",
+  "description": "Koru",
+  "keywords": [
+    "php"
+  ],
+  "type": "library",
+  "homepage": "https://github.com/TeaMeow/Koru",
+  "license": "",
+  "require": {
+        "mikey179/vfsStream": "1.6.3"
+    }
+}
