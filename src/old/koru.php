@@ -1,29 +1,25 @@
 <?php
-
-/**
- * The Class which build the KoruData.
- */
-
 class Koru
 {
     /**
      * Build
      *
-     * @param array|bool $data        Set false when we want to build the data from `php://input`.
-     * @param array      $extraData
+     * @param array $data
      */
 
-    static function build($data = null, $extraData = null)
+    static function build($data = null)
     {
-        $data      = $data      ?: [];
-        $extraData = $extraData ?: [];
+        $data = $data ?: [];
 
-        if($data === false)
-        {
-            parse_str(file_get_contents('php://input'), $input);
+        return new KoruData($data);
+    }
 
-            $data = array_merge($extraData, $input);
-        }
+    static function buildInput($data = null)
+    {
+        $data  = $data ?: [];
+        parse_str(file_get_contents('php://input'), $input);
+
+        $data = array_merge($data, $input);
 
         return new KoruData($data);
     }
@@ -32,27 +28,28 @@ class Koru
 
 
 
-/**
- * The data helper class.
- */
 
 class KoruData
 {
     /**
+     * Data
+     *
      * Stores the main data here.
      *
      * @var array
      */
 
-    private $data = [];
+    private $data       = [];
 
     /**
-     * Set true when the data is invalid or corrupt.
+     * Is Troubled
+     *
+     * Set true when the data invalid or has some problems.
      *
      * @var bool
      */
 
-    private $isCorrupt = false;
+    private $isTroubled = false;
 
 
 
@@ -73,8 +70,6 @@ class KoruData
     /**
      * GET
      *
-     * @param string $name   The name of the data.
-     *
      * @return mixed
      */
 
@@ -89,9 +84,6 @@ class KoruData
     /**
      * SET
      *
-     * @param string $name    The name of the data.
-     * @param mixed  $value   The value of the data.
-     *
      * @return KoruData
      */
 
@@ -104,9 +96,11 @@ class KoruData
 
 
     /**
-     * Decode a json data and replace the original data.
+     * Json Decode
      *
-     * @param string $name   The namd of the data to decode.
+     * Decode a json data and store to the same place.
+     *
+     * @param string $name   The namd of the data.
      *
      * @return KoruData
      */
@@ -123,16 +117,18 @@ class KoruData
 
 
     /**
-     * Specify the datas to remove.
+     * Clean
+     *
+     * Specify some datas to clean.
      *
      * @param string $variables   The name of the data to clean, seperate with commas (ex: a, b, c).
      *
      * @return KoruData
      */
 
-    function remove($variables)
+    function clean($variables)
     {
-        $variables = $this->commaToArray($variables);
+        $variables = explode(', ', $variables);
 
         foreach($this->data as $key => $value)
         {
@@ -148,36 +144,16 @@ class KoruData
 
 
     /**
-     * Convert commas to an array.
+     * Leave
      *
-     * @param  string $variables
-     *
-     * @return array
-     */
-
-    function commaToArray($variables)
-    {
-        $outputs   = explode(', ', $variables);
-        $variables = [];
-
-        foreach($outputs as $output)
-            $variables[] = str_replace(["\n", "\r", ' '], '', $output);
-
-        return $variables;
-    }
-
-
-
-
-    /**
-     * Clean all the datas expect some.
+     * Clean all the datas expect something.
      *
      * @param string $variables   The name of the data to keep, seperate with commas (ex: a, b, c).
      *
      * @return KoruData
      */
 
-    function keep($variables)
+    function leave($variables)
     {
         $variables = explode(', ', $variables);
 
@@ -200,53 +176,22 @@ class KoruData
 
 
     /**
-     * Get the data
+     * Store
      *
-     * @param string $name
+     * Store many datas in the same time.
      *
-     * @return mixed
-     */
-
-    function get($name)
-    {
-        if(strpos($name, ','))
-        {
-            $data = [];
-
-            foreach($this->commaToArray($name) as $name)
-                $data[$name] = isset($this->data[$name]) ? $this->data[$name] : null;
-        }
-        else
-        {
-            $data = isset($this->data[$name]) ? $this->data[$name] : null;
-        }
-
-        return $data;
-    }
-
-
-
-
-    /**
-     * Set
-     *
-     * @param string|array $name
-     * @param mixed        $value
+     * @param array $array
      *
      * @return KoruData
      */
 
-    function set($name, $value = null)
+    function store($array)
     {
-        if(is_array($name))
-        {
-            foreach($name as $key => $value)
-                $this->data[$key] = $value;
-        }
-        else
-        {
-            $this->data[$name] = $value;
-        }
+        if(!$array)
+            return $this;
+
+        foreach($array as $key => $value)
+            $this->set($key, $value);
 
         return $this;
     }
@@ -255,7 +200,42 @@ class KoruData
 
 
     /**
-     * Is the data empty?
+     * Get
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+
+    function get($name)
+    {
+        return isset($this->data[$name]) ? $this->data[$name] : null;
+    }
+
+
+
+
+    /**
+     * Set
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return KoruData
+     */
+
+    function set($name, $value)
+    {
+        $this->data[$name] = $value;
+
+        return $this;
+    }
+
+
+
+
+    /**
+     * Is Empty
      *
      * @param string $name   The name of the data.
      *
@@ -271,7 +251,7 @@ class KoruData
 
 
     /**
-     * Is the data null?
+     * Is Null
      *
      * @param string $name   The name of the data.
      *
@@ -287,19 +267,21 @@ class KoruData
 
 
     /**
-     * Set the data is invalid/corrupt or not.
+     * Is Troubled
+     *
+     * Set the data is invalid/troubled or not.
      *
      * @param bool $set
      *
      * @return KoruData
      */
 
-    function isCorrupt($set = false)
+    function isTroubled($set = false)
     {
         if($set)
-            $this->isCorrupt = true;
+            $this->isTroubled = true;
         else
-            return $this->isCorrupt;
+            return $this->isTroubled;
 
         return $this;
     }
@@ -308,25 +290,31 @@ class KoruData
 
 
     /**
-     * Returns true when there're only the datas which we wanted, no other datas.
+     * Only
      *
-     * @param  string $dataNames     The data names.
-     * @param  bool   $seriousMode   Set true to "serious mode", where all the condition must be matched.
+     * Returns true when there are only the datas which we wanted, no other datas.
+     *
+     * @param  string $dataNames   The data names.
+     * @param  bool   $must        Set true to "must mode".
      *
      * @return bool
      */
 
-    function only($dataNames, $seriousMode = false)
+    function only($dataNames, $must = false)
     {
-        $names = $this->commaToArray($dataNames);
+        $names = explode(',', $dataNames);
         $keys  = [];
+
 
         foreach($this->data as $key => $value)
             array_push($keys, $key);
 
+
         foreach($names as $name)
         {
-            if(!isset($this->data[$name]) && $seriousMode)
+            $name = str_replace(["\n", "\r", ' '], '', $name);
+
+            if(!isset($this->data[$name]) && $must)
                 return false;
 
             $keys = array_diff($keys, [$name]);
@@ -339,28 +327,51 @@ class KoruData
 
 
     /**
+     * Must
+     *
      * Returns true when the datas which we wanted do exist.
      *
-     * @param string $dataNames     The data names.
-     * @param bool   $seriousMode   Set true when all the datas must be existed.
+     * @param string $dataNames   The data names.
      *
      * @return bool
      */
 
-    function has($dataNames, $seriousMode = false)
-    {
-        if($seriousMode)
-            return $this->only($dataNames, true);
 
-        $names = $this->commaToArray($dataNames);
+    function must($dataNames)
+    {
+        return $this->only($dataNames, true);
+    }
+
+
+
+
+    /**
+     * Has
+     *
+     * Returns true when the datas which we wanted do exist.
+     *
+     * @param string $dataNames   The data names.
+     *
+     * @return bool
+     */
+
+    function has($dataNames)
+    {
+        $names = explode(',', $dataNames);
         $keys  = [];
+
 
         foreach($this->data as $key => $value)
             array_push($keys, $key);
 
+
         foreach($names as $name)
+        {
+            $name = str_replace(["\n", "\r", ' '], '', $name);
+
             if(!isset($this->data[$name]))
                 return false;
+        }
 
         return true;
     }
@@ -369,6 +380,8 @@ class KoruData
 
 
     /**
+     * Output Keys
+     *
      * Output an array which fills with the data names.
      *
      * @return array
@@ -388,6 +401,8 @@ class KoruData
 
 
     /**
+     * Output
+     *
      * Push the datas into a single array and output it.
      *
      * @param string $outputs   The values to output, seperate by commas.
@@ -398,7 +413,21 @@ class KoruData
     function output($outputs = null)
     {
         if($outputs)
-            return $this->get($outputs);
+        {
+            $outputs = explode(',', $outputs);
+
+            $data = [];
+
+            foreach($outputs as $output)
+            {
+                $output = str_replace(["\n", "\r", ' '], '', $output);
+
+                if(isset($this->data[$output]))
+                    $data[$output] = $this->data[$output];
+            }
+
+            return $data;
+        }
 
         return $this->data;
     }
