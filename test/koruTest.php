@@ -128,15 +128,14 @@ class KoruTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($data->has('username, password'), true);
         $this->assertEquals($data->has('username, birthday'), false);
-        //$this->assertEquals($data->has('username, birthday', true), false);
     }
 
-    function testOutputKeys()
+    function testGetKeys()
     {
         $data = Koru::build(['username' => 'foobar',
                              'password' => 'moonDalan']);
 
-        $this->assertEquals($data->outputKeys(), ['username', 'password']);
+        $this->assertEquals($data->getKeys(), ['username', 'password']);
     }
 }
 ?>

@@ -377,7 +377,7 @@ class KoruData
      * @return array
      */
 
-    function outputKeys()
+    function getKeys()
     {
         $keys = [];
 
@@ -385,25 +385,6 @@ class KoruData
             array_push($keys, $key);
 
         return $keys;
-    }
-
-
-
-
-    /**
-     * Push the datas into a single array and output it.
-     *
-     * @param string $outputs   The values to output, seperate by commas.
-     *
-     * @return array
-     */
-
-    function output($outputs = null)
-    {
-        if($outputs)
-            return $this->get($outputs);
-
-        return $this->data;
     }
 }
 ?>
