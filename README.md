@@ -7,7 +7,7 @@
 
 &nbsp;
  
-# Koru [![GitHub release](https://img.shields.io/github/release/TeaMeow/Koru.svg?maxAge=2592000)]() [![Coverage Status](https://coveralls.io/repos/github/TeaMeow/Koru/badge.svg?branch=master)](https://coveralls.io/github/TeaMeow/Koru?branch=master)
+# Koru [![GitHub release](https://img.shields.io/github/release/TeaMeow/Koru.svg?maxAge=2592000)](https://github.com/TeaMeow/Koru/releases) [![Coverage Status](https://coveralls.io/repos/github/TeaMeow/Koru/badge.svg?branch=master)](https://coveralls.io/github/TeaMeow/Koru?branch=master)
 
 Koru 是一個將資料轉換成 stdClass 的資料建構類別，用來更方便地與資料溝通。
 
