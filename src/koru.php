@@ -19,11 +19,9 @@ class Koru
         $extraData = $extraData ?: [];
 
         if($data === false)
-        {
             parse_str(file_get_contents('php://input'), $input);
 
-            $data = array_merge($extraData, $input);
-        }
+        $data = array_merge($extraData, $input);
 
         return new KoruData($data);
     }
@@ -207,7 +205,7 @@ class KoruData
      * @return mixed
      */
 
-    function get($name)
+    function get($name = null)
     {
         if(strpos($name, ','))
         {
@@ -215,6 +213,10 @@ class KoruData
 
             foreach($this->commaToArray($name) as $name)
                 $data[$name] = isset($this->data[$name]) ? $this->data[$name] : null;
+        }
+        else if($name === null)
+        {
+            return $this->data;
         }
         else
         {
