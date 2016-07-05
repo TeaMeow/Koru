@@ -5,4 +5,9 @@ php:
   - '7.0'
   - hhvm
   - nightly
-script: phpunit Test test/unit/test.php
+
+script:
+  - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.0/coveralls.phar
+  - chmod +x coveralls.phar
+  - phpunit -c phpunit.xml
+  - php coveralls.phar -v -x build/logs/clover.xml
