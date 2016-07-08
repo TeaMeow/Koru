@@ -17,13 +17,6 @@ class KoruTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data->password, 'moonDalan');
     }
 
-    function testBuildInput()
-    {
-        //$data = Koru::build(false);
-
-        //$this->assertEquals($data, []);
-    }
-
     function testMultipleGet()
     {
         $data = ['username' => 'foobar',
@@ -42,6 +35,18 @@ class KoruTest extends \PHPUnit_Framework_TestCase
         $koru = Koru::build($data);
 
         $this->assertEquals($koru->get(), $data);
+    }
+
+    function testBuildAndKeep()
+    {
+        $data = ['username' => 'foobar',
+                 'password' => 'moonDalan',
+                 'birthday' => '1998-07-13'];
+
+        $koru = Koru::build($data, 'username, password');
+
+        $this->assertEquals($koru->get(), ['username' => 'foobar',
+                                           'password' => 'moonDalan']);
     }
 
     function testDeclare()

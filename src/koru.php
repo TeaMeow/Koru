@@ -22,9 +22,15 @@ class Koru
         if($data === false)
             parse_str(file_get_contents('php://input'), $input);
 
-        $data = array_merge($data, $extraData, $input);
+        if(is_array($extraData))
+            $data = array_merge($data, $extraData, $input);
+        else
+            $data = array_merge($data, $input);
 
-        return new KoruData($data);
+        if(is_string($extraData))
+            return new KoruData($data);
+        else
+            return new KoruData($data)->keep($extraData);
     }
 }
 
