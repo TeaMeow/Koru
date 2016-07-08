@@ -70,6 +70,25 @@ class KoruData
 
 
     /**
+     * CALL
+     *
+     * Used to handle some PHP keywords or .. ALL.
+     *
+     * @return mixed
+     */
+
+    public function __call($name, $args)
+    {
+        $basicFunctions = ['declare'];
+
+        if(in_array($name, $basicFunctions))
+            return call_user_func_array(array($this, '_' . $name), $args);
+    } // @codeCoverageIgnore
+
+
+
+
+    /**
      * GET
      *
      * @param string $name   The name of the data.
@@ -97,6 +116,21 @@ class KoruData
     function __set($name, $value)
     {
         return $this->set($name, $value);
+    }
+
+
+
+
+    /**
+     *
+     *
+     */
+
+    function _declare($data)
+    {
+        $this->data = [];
+
+        $this->set($data);
     }
 
 

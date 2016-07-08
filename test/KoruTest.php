@@ -44,6 +44,22 @@ class KoruTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($koru->get(), $data);
     }
 
+    function testDeclare()
+    {
+        $data = ['username' => 'foobar',
+                 'password' => 'moonDalan'];
+
+        $koru = Koru::build($data);
+
+        $data = ['username' => 'foobar',
+                 'birthday' => '1998-07-13'];
+
+        $this->assertEquals($koru->declare($data), $data);
+
+        $this->assertEquals($koru->declare(['username' => $koru->username,
+                                            'birthday' => $koru->birthday]), $data);
+    }
+
     function testSet()
     {
         $data = Koru::build();
