@@ -33,7 +33,7 @@ class Koru
         $koru = new KoruData($data);
         $koru->keep($extraData);
 
-        return $koru
+        return $koru;
     }
 }
 
