@@ -131,6 +131,8 @@ class KoruData
         $this->data = [];
 
         $this->set($data);
+
+        return $this;
     }
 
 

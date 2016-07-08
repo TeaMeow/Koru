@@ -54,10 +54,10 @@ class KoruTest extends \PHPUnit_Framework_TestCase
         $data = ['username' => 'foobar',
                  'birthday' => '1998-07-13'];
 
-        $this->assertEquals($koru->declare($data), $data);
+        $this->assertEquals($koru->declare($data)->get(), $data);
 
         $this->assertEquals($koru->declare(['username' => $koru->username,
-                                            'birthday' => $koru->birthday]), $data);
+                                            'birthday' => $koru->birthday])->get(), $data);
     }
 
     function testSet()
