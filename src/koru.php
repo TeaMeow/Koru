@@ -27,10 +27,13 @@ class Koru
         else
             $data = array_merge($data, $input);
 
-        if(is_string($extraData))
+        if(!is_string($extraData))
             return new KoruData($data);
-        else
-            return new KoruData($data)->keep($extraData);
+
+        $koru = new KoruData($data);
+        $koru->keep($extraData);
+
+        return $koru
     }
 }
 
