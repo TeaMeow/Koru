@@ -201,7 +201,7 @@ class KoruData
 
     function commaToArray($variables)
     {
-        $outputs   = explode(', ', $variables);
+        $outputs   = explode(',', $variables);
         $variables = [];
 
         foreach($outputs as $output)
