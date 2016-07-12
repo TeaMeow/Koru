@@ -251,14 +251,22 @@ class KoruData
      * @return mixed
      */
 
-    function get($name = null)
+    function get($name = null, $default = 'KORU_UNDEFINED')
     {
         if(strpos($name, ','))
         {
             $data = [];
 
             foreach($this->commaToArray($name) as $name)
-                $data[$name] = isset($this->data[$name]) ? $this->data[$name] : null;
+
+                /** Set the data as a default value f user set the default value */
+                if($default !== 'KORU_UNDEFINED')
+                    $data[$name] = isset($this->data[$name]) ? $this->data[$name] : $default;
+
+                /** Otherwise we don't push it into the output array */
+                else
+                    if(isset($this->data[$name]))
+                        $data[$name] = $this->data[$name];
         }
         else if($name === null)
         {
@@ -293,7 +301,8 @@ class KoruData
         }
         else
         {
-            $this->data[$name] = $value;
+            if($name !== null || $name !== false)
+                $this->data[$name] = $value;
         }
 
         return $this;
