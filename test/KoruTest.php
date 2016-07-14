@@ -189,6 +189,7 @@ class KoruTest extends \PHPUnit_Framework_TestCase
                              'password' => 'moonDalan']);
 
         $this->assertEquals($data->has('username, password'), true);
+        $this->assertEquals($data->has('username, password', true), true);
         $this->assertEquals($data->has('username, birthday'), false);
     }
 

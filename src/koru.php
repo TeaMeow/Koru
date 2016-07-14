@@ -15,11 +15,12 @@ class Koru
 
     static function build($data = null, $extraData = null)
     {
+        $fromInput = $data === false;
         $data      = $data      ?: [];
         $extraData = $extraData ?: [];
         $input     = [];
 
-        if($data === false)
+        if($fromInput)
             parse_str(file_get_contents('php://input'), $input);
 
         if(is_array($extraData))
@@ -223,7 +224,7 @@ class KoruData
 
     function keep($variables)
     {
-        $variables = explode(', ', $variables);
+        $variables = $this->commaToArray($variables);
 
         foreach($this->data as $key => $value)
         {
@@ -368,12 +369,11 @@ class KoruData
      * Returns true when there're only the datas which we wanted, no other datas.
      *
      * @param  string $dataNames     The data names.
-     * @param  bool   $seriousMode   Set true to "serious mode", where all the condition must be matched.
      *
      * @return bool
      */
 
-    function only($dataNames, $seriousMode = false)
+    function only($dataNames)
     {
         $names = $this->commaToArray($dataNames);
         $keys  = [];
@@ -383,7 +383,7 @@ class KoruData
 
         foreach($names as $name)
         {
-            if(!isset($this->data[$name]) && $seriousMode)
+            if(!isset($this->data[$name]))
                 return false;
 
             $keys = array_diff($keys, [$name]);
@@ -399,16 +399,13 @@ class KoruData
      * Returns true when the datas which we wanted do exist.
      *
      * @param string $dataNames     The data names.
-     * @param bool   $seriousMode   Set true when all the datas must be existed.
+     * @param bool   $relaxMode     Set true when NOT all the data must be existed.
      *
      * @return bool
      */
 
-    function has($dataNames, $seriousMode = false)
+    function has($dataNames, $relaxMode = false)
     {
-        if($seriousMode)
-            return $this->only($dataNames, true);
-
         $names = $this->commaToArray($dataNames);
         $keys  = [];
 
@@ -416,6 +413,8 @@ class KoruData
             array_push($keys, $key);
 
         foreach($names as $name)
+            if(isset($this->data[$name]) && $relaxMode)
+                return true;
             if(!isset($this->data[$name]))
                 return false;
 
